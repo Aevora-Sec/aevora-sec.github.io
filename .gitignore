@@ -1,0 +1,9 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local server / tooling
+__pycache__/
+node_modules/

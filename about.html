@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Aevora Security</title>
+<meta name="description" content="Aevora Security: sovereign, EU-domiciled adversarial AI security. Two-layer LLM defense, self-improving, reproducible.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav"><div class="wrap">
+  <span class="brand">Aevora<b>·</b>Security</span>
+  <nav>
+    <a href="benchmark.html">Benchmark</a>
+    <a href="about.html">About</a>
+    <a href="https://github.com/Aevora-Sec">GitHub</a>
+  </nav>
+</div></header>
+
+<section class="hero" style="padding-bottom:30px"><div class="wrap">
+  <p class="kicker">About</p>
+  <h1 style="font-size:2rem">Sovereign adversarial AI security, from the EU.</h1>
+  <p class="lead">Aevora builds and measures defenses for AI agents — the layer between a model and the
+  real world. Everything runs locally, is reproducible, and is honest about its limits.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>The thesis</h2>
+  <p class="sub">Incumbents are cloud-native. Aevora is sovereign-native — by design, not as a feature.</p>
+  <p>AI security is won with <strong>numbers, not claims</strong>. The market is crowded with tools that
+  promise robustness and prove nothing. Aevora takes the opposite stance: a small set of <em>reproducible</em>
+  benchmarks, run fully offline on commodity CPU, that publish their weaknesses as loudly as their strengths.</p>
+  <p style="margin-top:14px">The wedge is structural. EU AI Act Article 15 makes adversarial testing of high-risk
+  AI a legal requirement, and regulated sectors — banks, healthcare, public administration, defense — increasingly
+  cannot send data to US clouds. A security tool that runs <strong>air-gapped, EU-domiciled, and auditable</strong>
+  occupies a category that cloud-SaaS incumbents structurally cannot enter.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Two layers, measured separately</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Execution-time policy gate</h3>
+      <p>Blocks dangerous <em>actions</em> (shell, API, tool calls) before they run. 100% on clear attacks,
+      0% false positives, sub-millisecond — and an honestly-published 91.7% obfuscation-bypass that motivates
+      the semantic layer. <a href="benchmark.html">See the numbers →</a></p>
+    </div>
+    <div class="card">
+      <h3>Input-time injection defense</h3>
+      <p>Blocks prompt-injection (OWASP LLM01) before untrusted text reaches the model — deterministic
+      detector plus a sovereign, CPU-only classifier trained on a domain-specific corpus. Benchmark release in progress.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Principles</h2>
+  <table>
+    <tr><td><strong>Honest numbers</strong></td><td>Every metric is reproducible and dated. We never publish a number the code contradicts.</td></tr>
+    <tr><td><strong>Sovereign</strong></td><td>Offline, CPU-only, no third-party calls. Your data never leaves your premises.</td></tr>
+    <tr><td><strong>Open methodology</strong></td><td>Corpora and harnesses are public so the measurement can be audited and challenged.</td></tr>
+    <tr><td><strong>Defensive</strong></td><td>Built to harden systems. Adversarial capability stays sandboxed and scope-gated.</td></tr>
+  </table>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Contact</h2>
+  <p>Open-source work and benchmarks live on <a href="https://github.com/Aevora-Sec">GitHub (Aevora-Sec)</a>.
+  Reach out for collaboration, EU AI Act robustness testing, or sovereign LLM-security audits.</p>
+  <p class="note">Best way to reach out: open an issue or discussion on <a href="https://github.com/Aevora-Sec">GitHub</a>. A dedicated contact inbox follows with the custom domain.</p>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© Aevora Security · EU-domiciled · sovereign AI security</span>
+  <span><a href="index.html">Home</a> · <a href="benchmark.html">Benchmark</a> · <a href="https://github.com/Aevora-Sec">GitHub</a></span>
+</div></footer>
+
+</body>
+</html>

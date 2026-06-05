@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benchmark — Aevora Security</title>
+<meta name="description" content="Reproducible execution-time policy-gate benchmark: 100% clear-block, 0% false positives, honest 91.7% obfuscation-bypass.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav"><div class="wrap">
+  <span class="brand">Aevora<b>·</b>Security</span>
+  <nav>
+    <a href="benchmark.html">Benchmark</a>
+    <a href="about.html">About</a>
+    <a href="https://github.com/Aevora-Sec">GitHub</a>
+  </nav>
+</div></header>
+
+<section class="hero" style="padding-bottom:34px"><div class="wrap">
+  <p class="kicker">Execution-time policy gate</p>
+  <h1 style="font-size:2rem">The headline, honestly.</h1>
+  <p class="lead">A policy gate decides whether an AI agent's <em>action</em> — a shell command, an API call —
+  is allowed to run. Here is how the Aevora production engine scores, including the number we are not proud of.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Production policy engine</h2>
+  <p class="sub">Measured 2026-06-04 · corpus: 72 malicious (48 clear + 24 obfuscated) + 100 benign · SHA-256 pinned · CPU, no GPU.</p>
+  <table>
+    <tr><th>Metric</th><th>Value</th><th>Meaning</th></tr>
+    <tr><td class="mono">clear_block_rate</td><td><span class="good">100.0%</span></td><td>non-obfuscated malicious actions blocked</td></tr>
+    <tr><td class="mono">fp_rate</td><td><span class="good">0.0%</span></td><td>benign actions wrongly blocked (100-sample control)</td></tr>
+    <tr><td class="mono">obf_bypass_rate</td><td><span class="warn">91.7%</span></td><td>obfuscated malicious that <strong>slipped through</strong></td></tr>
+    <tr><td class="mono">latency p50 / p95</td><td class="mono">0.41 / 0.67 ms</td><td>per-decision wall time</td></tr>
+  </table>
+
+  <blockquote>Read the third row again. A deterministic gate blocks clear attacks perfectly and never
+  cries wolf — but it is near-blind to obfuscation (base64, <code>$IFS</code>-splitting, homoglyphs,
+  zero-width characters). We publish that 91.7% because it is the honest evidence that one layer is
+  not enough — and exactly what justifies a second, semantic layer. A benchmark that shows only its
+  trophies is marketing; one that shows its failures is engineering.</blockquote>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Reproduce it (offline, one command)</h2>
+  <p class="sub">The corpus + harness are public. Bring your own engine — any module exposing <code>audit(text)-&gt;bool</code>.</p>
+  <pre><code>git clone https://github.com/Aevora-Sec/policy-gate-bench
+cd policy-gate-bench
+python policy_bench.py                    # bundled illustrative engine
+python policy_bench.py --engine my_engine # plug your own gate</code></pre>
+  <p>The bundled illustrative engine (a tiny 10-pattern ruleset, included only to demonstrate the harness)
+  scores <span class="mono"><span class="good">27.1%</span> clear / <span class="good">0%</span> FP</span> — a
+  naive list catches a quarter of clear attacks; the production engine catches all. That gap is the value
+  of measuring instead of guessing.</p>
+  <p class="note">Honesty rules: every number is reproducible by one command, offline · results are
+  append-only (a worse number is never silently overwritten) · a number always carries its corpus SHA-256
+  and date. The production engine ships with the platform; this repo makes the measurement auditable.</p>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© Aevora Security · sovereign AI security</span>
+  <span><a href="index.html">Home</a> · <a href="https://github.com/Aevora-Sec">GitHub</a> · <a href="about.html">About</a></span>
+</div></footer>
+
+</body>
+</html>

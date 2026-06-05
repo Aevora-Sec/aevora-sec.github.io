@@ -1,0 +1,7 @@
+# Normalize line endings: store LF in the repo, check out native per-OS.
+* text=auto eol=lf
+
+# Explicit text types
+*.html text eol=lf
+*.css  text eol=lf
+*.md   text eol=lf

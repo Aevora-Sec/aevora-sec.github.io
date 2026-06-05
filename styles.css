@@ -1,0 +1,77 @@
+/* Aevora Security — sovereign static site. No external fonts/CDNs (privacy + offline). */
+:root{
+  --bg:#0a0d13; --panel:#10141d; --panel-2:#161b26; --line:#222a38;
+  --txt:#c9d2df; --muted:#828c9c; --bright:#eef2f8;
+  --accent:#3fb6a8; --accent-2:#5fd3c4; --warn:#e0a44b; --bad:#e05d5d;
+  --mono:ui-monospace,"Cascadia Code","JetBrains Mono",Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--txt);
+  font-family:var(--sans); line-height:1.6; font-size:17px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent-2); text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:880px; margin:0 auto; padding:0 22px}
+
+/* nav */
+header.nav{border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(10,13,19,.85); backdrop-filter:blur(8px); z-index:10}
+.nav .wrap{display:flex; align-items:center; justify-content:space-between; height:62px}
+.brand{font-weight:700; color:var(--bright); letter-spacing:.3px; font-size:1.12rem}
+.brand b{color:var(--accent)}
+.nav nav a{color:var(--muted); margin-left:22px; font-size:.95rem}
+.nav nav a:hover{color:var(--bright); text-decoration:none}
+
+/* hero */
+.hero{padding:88px 0 56px; border-bottom:1px solid var(--line)}
+.kicker{font-family:var(--mono); color:var(--accent); font-size:.82rem; letter-spacing:2px; text-transform:uppercase; margin:0 0 14px}
+.hero h1{font-size:2.5rem; line-height:1.15; margin:0 0 18px; color:var(--bright); letter-spacing:-.5px}
+.hero p.lead{font-size:1.18rem; color:var(--muted); max-width:660px; margin:0 0 30px}
+.cta{display:inline-block; background:var(--accent); color:#06231f; font-weight:700; padding:12px 22px; border-radius:8px; font-size:.98rem}
+.cta:hover{background:var(--accent-2); text-decoration:none}
+.cta.ghost{background:transparent; border:1px solid var(--line); color:var(--txt); margin-left:10px}
+.cta.ghost:hover{border-color:var(--accent); color:var(--bright)}
+
+/* stat band */
+.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:42px 0 6px}
+.stat{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 16px; text-align:center}
+.stat .n{font-family:var(--mono); font-size:1.9rem; color:var(--bright); font-weight:700}
+.stat .n.good{color:var(--accent-2)} .stat .n.warn{color:var(--warn)}
+.stat .l{font-size:.8rem; color:var(--muted); margin-top:6px; letter-spacing:.3px}
+.note{font-size:.84rem; color:var(--muted); margin-top:14px}
+
+/* sections */
+section.block{padding:54px 0; border-bottom:1px solid var(--line)}
+section.block h2{font-size:1.5rem; color:var(--bright); margin:0 0 8px}
+section.block .sub{color:var(--muted); margin:0 0 26px}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:22px}
+.card h3{margin:0 0 8px; color:var(--bright); font-size:1.08rem}
+.card h3 .tag{font-family:var(--mono); font-size:.7rem; color:var(--accent); border:1px solid var(--line); border-radius:5px; padding:2px 7px; margin-left:8px; vertical-align:middle}
+.card p{margin:0; color:var(--muted); font-size:.96rem}
+
+/* tables + code */
+table{width:100%; border-collapse:collapse; margin:8px 0 4px; font-size:.95rem}
+th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line)}
+th{color:var(--muted); font-weight:600; font-size:.82rem; letter-spacing:.4px; text-transform:uppercase}
+td.mono,.mono{font-family:var(--mono)}
+td .good{color:var(--accent-2); font-weight:700}
+td .warn{color:var(--warn); font-weight:700}
+pre{background:#0c1017; border:1px solid var(--line); border-radius:8px; padding:16px; overflow:auto; font-family:var(--mono); font-size:.9rem; color:var(--txt)}
+code{font-family:var(--mono); background:var(--panel-2); border:1px solid var(--line); border-radius:4px; padding:1px 6px; font-size:.88em}
+pre code{background:none; border:none; padding:0}
+blockquote{border-left:3px solid var(--accent); margin:18px 0; padding:6px 18px; color:var(--muted); background:var(--panel)}
+
+/* footer */
+footer{padding:36px 0; color:var(--muted); font-size:.86rem}
+footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px}
+
+@media(max-width:680px){
+  .hero h1{font-size:1.9rem}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .nav nav a{margin-left:14px}
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does my self-improving AI actually improve? Measuring capability, not activity — Aevora Security</title>
+<meta name="description" content="Most 'self-improving AI' tracks activity, not capability. I built a like-for-like capability ledger to prove whether the loop compounds — and it immediately caught a measurement confound faking a regression.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="nav"><div class="wrap">
+  <a class="brand" href="../index.html" style="text-decoration:none">Aevora<b>·</b>Security</a>
+  <nav>
+    <a href="../benchmark.html">Benchmark</a>
+    <a href="../blog.html">Blog</a>
+    <a href="../about.html">About</a>
+    <a href="https://github.com/Aevora-Sec">GitHub</a>
+  </nav>
+</div></header>
+
+<section class="hero" style="padding-bottom:34px"><div class="wrap">
+  <p class="kicker">Methodology · provable self-improvement</p>
+  <h1 style="font-size:2.05rem">Does my self-improving AI actually improve? I measured capability, not activity.</h1>
+  <p class="lead">Everyone says their AI agent is "self-improving." Almost no one measures whether it's
+  actually getting <em>better</em> — or just <em>busier</em>. I built a small, deterministic ledger to
+  settle that honestly. On its first run it caught a measurement confound that was faking a regression in
+  my own numbers.</p>
+  <p class="note">The tool is public and runs offline:
+  <a href="https://github.com/Aevora-Sec/policy-gate-bench">github.com/Aevora-Sec/policy-gate-bench</a>
+  → <code>python capability_ledger.py --results example_results</code></p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>1. Activity is not capability</h2>
+  <p>My self-improvement loop tracked a tidy "progress" number built from counts: knowledge-base size,
+  number of evolution cycles, number of mutated prompts. It crept upward and felt great.</p>
+  <p>But that metric measures <strong>activity</strong>, not <strong>capability</strong>. A loop can spin,
+  a knowledge base can grow, and the system's real ability to <em>block attacks</em> can stay flat — or
+  quietly regress — while the vanity number keeps climbing. A self-improving security tool that can't prove
+  it's getting better is just an expensive way to feel productive.</p>
+  <blockquote>The claim "my AI is self-improving" is worthless without a capability curve. So I built the curve.</blockquote>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>2. The capability ledger</h2>
+  <p>It reads the benchmark result files the loop already produces (<code>{benchmark, timestamp,
+  metrics}</code>), builds a <strong>time series per metric across generations</strong>, fits a slope, and
+  reports an honest verdict: <span class="good">compounding</span>, <span class="warn">flat</span>, or
+  <span class="warn">regressing</span> — with the right polarity (for <code>obf_bypass_rate</code> and
+  <code>fp_rate</code>, lower is better).</p>
+  <p>Crucially, it compares <strong>like-for-like only</strong>: a "variant" is
+  <em>(benchmark + config + malicious-corpus SHA)</em>. You cannot compare a score on one corpus against a
+  score on a different corpus and call the difference "improvement." That sounds obvious. It is also exactly
+  the mistake the first version made on my own data.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>3. The confound it caught (on my own numbers)</h2>
+  <p>First run, the naive ledger flagged my input-time injection detector as <strong>regressing hard</strong>
+  — block-rate falling from <code>0.635</code> to <code>0.145</code>. Alarming. Also wrong.</p>
+  <p>Those two numbers were measured on <strong>different corpora</strong>: 0.635 on my in-domain CTI set
+  (SHA <code>5b943c47…</code>), 0.145 on a much harder external standard set (SHA <code>cab89306…</code>).
+  Apples vs oranges. On the <em>same</em> corpus, block-rate was actually <strong>flat-to-improving</strong>
+  (0.6347 → 0.6377). There was no regression — only a measurement bug in how I was comparing.</p>
+  <blockquote>The ledger's first useful act was to catch a flaw in <em>itself</em> — and in how I read my own
+  results. That is the whole point: the measurement polices the claim.</blockquote>
+  <p>The fix: segment every series by corpus SHA + config, and mark false-positive metrics
+  <code>confounded-benign-changed</code> whenever the benign control set changed. Now the curve is honest.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>4. What the honest curve shows</h2>
+  <p>On a frozen, like-for-like series, the execution-time policy gate is <strong>genuinely compounding</strong>:</p>
+  <table>
+    <tr><th>Metric</th><th>Across generations</th><th>Verdict</th></tr>
+    <tr><td class="mono">clear_block_rate</td><td>0.854 → <strong>1.00</strong></td><td><span class="good">improving</span></td></tr>
+    <tr><td class="mono">obf_bypass_rate</td><td>1.00 → <strong>0.917</strong> (lower=better)</td><td><span class="good">improving</span></td></tr>
+    <tr><td class="mono">fp_rate</td><td>0.00 → 0.00</td><td>flat (held)</td></tr>
+    <tr><td class="mono">latency_ms_p95</td><td>0.29 → 0.67 ms</td><td><span class="warn">regressing</span> (still sub-ms — flagged honestly)</td></tr>
+  </table>
+  <p style="margin-top:14px">No vanity. Where it improves, it says so; where latency crept up, it says that
+  too. The bundled <code>example_results</code> demonstrates a clean <strong>COMPOUNDING</strong> verdict out
+  of the box so you can see the shape before pointing it at your own data.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>5. Why this matters</h2>
+  <p>EU AI Act <strong>Article 15</strong> asks high-risk AI systems to <em>declare measured</em> robustness.
+  A one-off number is a snapshot; a <strong>capability curve with provable non-regression</strong> is the
+  real thing — evidence that the system doesn't silently decay as it evolves. Pair it with a guardian that
+  exits non-zero on a real capability regression, and self-improvement stops being a slogan and becomes a
+  gate.</p>
+  <p class="note">A measured "flat" beats an unmeasured "it's self-improving!" — that honesty is the proof.</p>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <h2>Reproduce</h2>
+  <pre><code>git clone https://github.com/Aevora-Sec/policy-gate-bench
+cd policy-gate-bench
+python capability_ledger.py --results example_results   # offline, zero deps</code></pre>
+  <p>Point <code>--results</code> at your own folder of benchmark JSONs. Open an issue if a verdict looks
+  wrong — the polarity and segmentation rules are meant to be challenged.</p>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© Aevora Security · sovereign AI security</span>
+  <span><a href="../index.html">Home</a> · <a href="../benchmark.html">Benchmark</a> · <a href="../blog.html">Blog</a> · <a href="https://github.com/Aevora-Sec">GitHub</a></span>
+</div></footer>
+
+</body>
+</html>

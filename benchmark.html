@@ -28,7 +28,7 @@
 
 <section class="block"><div class="wrap">
   <h2>Production policy engine</h2>
-  <p class="sub">Measured 2026-06-04 · corpus: 72 malicious (48 clear + 24 obfuscated) + 100 benign · SHA-256 pinned · CPU, no GPU.</p>
+  <p class="sub">Measured 2026-06-04 · corpus: 72 malicious (48 clear + 24 obfuscated) + 100 benign · SHA-256 pinned · CPU, no GPU · <strong>production engine — not bundled in the public repo</strong> (reproduce the method by plugging a comparable engine, below).</p>
   <table>
     <tr><th>Metric</th><th>Value</th><th>Meaning</th></tr>
     <tr><td class="mono">clear_block_rate</td><td><span class="good">100.0%</span></td><td>non-obfuscated malicious actions blocked</td></tr>
@@ -55,9 +55,11 @@ python policy_bench.py --engine my_engine # plug your own gate</code></pre>
   scores <span class="mono"><span class="good">27.1%</span> clear / <span class="good">0%</span> FP</span> — a
   naive list catches a quarter of clear attacks; the production engine catches all. That gap is the value
   of measuring instead of guessing.</p>
-  <p class="note">Honesty rules: every number is reproducible by one command, offline · results are
-  append-only (a worse number is never silently overwritten) · a number always carries its corpus SHA-256
-  and date. The production engine ships with the platform; this repo makes the measurement auditable.</p>
+  <p class="note">Honesty rules: the <strong>public</strong> engine's numbers reproduce in one offline
+  command here; the production <span class="good">100%</span> is <strong>measured on this same
+  SHA-256-pinned public corpus</strong> — the engine itself is not bundled, so plug a comparable gate via
+  <code>--engine</code> to re-run the method · results are append-only (a worse number is never silently
+  overwritten) · every number carries its corpus SHA-256 and date.</p>
 </div></section>
 
 <footer><div class="wrap">
